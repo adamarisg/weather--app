@@ -1,7 +1,12 @@
+@font-face {
+    font-family: poppins;
+    src: url(Poppins-Regular.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: poppins;
     box-sizing: border-box;
 }
 
@@ -37,7 +42,7 @@ body{
     font-size: 18px;
 }
 ::placeholder{
-    color: #2b3852;
+    color: #555;
     opacity: 1;
 }
 .search button{
