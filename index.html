@@ -12,8 +12,11 @@
             spellcheck="false">
             <button> <img src="images/search.png" alt="search button"></button>
         </div>
+        <div class="error">
+            <p> Invalid city name </p>
+        </div>
         <div class="weather">
-            <img src="images/snow.png" alt="image of a rain cloud" class="weather-icon">
+            <img src="images/rain.png" alt="image of a rain cloud" class="weather-icon">
             <h1 class="temperature">22°f</h1> 
             <h2 class="city">New York</h2>
             <div class="details">
@@ -43,21 +46,35 @@
         /* Grabbing the city information*/
         const searchBar = document.querySelector(".search input");
         const searchButton = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
 
         /*Gets city information and displays it on the card*/
         async function checkWeather(city){
 
             const response = await fetch(apiUrl + city +`&appid=${apiKey}`);
-            var data = await response.json();
 
-            /* Display weather info in the console*/
-            console.log(data);
+            if (response.status == 404) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".weather").style.display = "none";
+            }else{
+                var data = await response.json();
 
-            document.querySelector(".city").innerHTML = data.name;
-            document.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°f";
-            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-            document.querySelector(".wind").innerHTML = Math.round(data.wind.speed) + " mph";
-            
+                /* Display weather info in the console*/
+                console.log(data);
+
+                document.querySelector(".city").innerHTML = data.name;
+                document.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°f";
+                document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+                document.querySelector(".wind").innerHTML = Math.round(data.wind.speed) + " mph";
+
+                /*Display correct images*/
+                if (data.weather[0].main != null) {
+                    weatherIcon.src = "images/" + data.weather[0].main.toLowerCase() + ".png";
+                } 
+                /*Hide the default weather info*/
+                document.querySelector(".weather").style.display = "block";
+                document.querySelector(".error").style.display = "none";
+            }
         }
 
         searchButton.addEventListener("click", ()=>{
